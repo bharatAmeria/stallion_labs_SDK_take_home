@@ -1,23 +1,8 @@
-<h1 align="center">
-  ⚡ react-native-bitnet
-</h1>
+# ⚡ react-native-bitnet
 
-<p align="center">
-  <strong>Run 1-bit LLMs on-device in React Native — no cloud, no latency, no data leaving the device.</strong>
-</p>
+**Run 1-bit LLMs on-device in React Native — no cloud, no latency, no data leaving the device.**
 
-<p align="center">
-  <a href="https://www.npmjs.com/package/react-native-bitnet">
-    <img src="https://img.shields.io/npm/v/react-native-bitnet?color=7c3aed&style=flat-square" alt="npm version" />
-  </a>
-  <a href="https://github.com/bharatAmeria/stallion_labs_SDK_take_home/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/bharatAmeria/stallion_labs_SDK_take_home/ci.yml?style=flat-square&label=CI" alt="CI" />
-  </a>
-  <img src="https://img.shields.io/badge/platform-Android%20%7C%20iOS-lightgrey?style=flat-square" alt="platform" />
-  <img src="https://img.shields.io/badge/language-TypeScript-3178c6?style=flat-square" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="MIT License" />
-  <img src="https://img.shields.io/badge/tests-100%20passing-22c55e?style=flat-square" alt="tests" />
-</p>
+
 
 ---
 
@@ -94,52 +79,63 @@ console.log(result.content); // "Hello! How can I help you today?"
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-Token events flow from C++ → JNI/ObjC++ → React Native Event Emitter → JavaScript in real time.
+Token events flow from C++→ JNI/ObjC++ → React Native Event Emitter → JavaScript in real time.
 
 ---
 
 ## Features
 
-| Feature | Details |
-|---|---|
-| **Native bindings** | C++ JNI on Android, ObjC++ on iOS — no WASM/JS fallback |
-| **ARM NEON acceleration** | `arm64-v8a` with `dotprod` extensions; `armeabi-v7a` NEON fallback |
-| **Model download** | Auto-resolve `hf://owner/repo` → HuggingFace API → best `.gguf` file |
-| **Resumable downloads** | Survives network drops; resumes from byte offset on retry |
-| **Streaming inference** | Token callback + async iterator (`for await`) API |
-| **OpenAI-compatible API** | Drop-in replacement for `openai.chat.completions.create()` |
-| **Chat templates** | Built-in formatters: `llama3`, `mistral`, `chatml`, `alpaca` |
-| **Cancellation** | `AbortController` / `AbortSignal` — cancel mid-generation |
-| **Typed errors** | `ModelDownloadError`, `InferenceError`, `ConcurrencyLimitError`, etc. |
-| **TypeScript-first** | Full type definitions + JSDoc on every public API |
-| **100 unit tests** | All passing, with mock adapters for CI (no device needed) |
+
+| Feature                   | Details                                                               |
+| ------------------------- | --------------------------------------------------------------------- |
+| **Native bindings**       | C++JNI on Android, ObjC++ on iOS — no WASM/JS fallback                |
+| **ARM NEON acceleration** | `arm64-v8a` with `dotprod` extensions; `armeabi-v7a` NEON fallback    |
+| **Model download**        | Auto-resolve `hf://owner/repo` → HuggingFace API → best `.gguf` file  |
+| **Resumable downloads**   | Survives network drops; resumes from byte offset on retry             |
+| **Streaming inference**   | Token callback + async iterator (`for await`) API                     |
+| **OpenAI-compatible API** | Drop-in replacement for `openai.chat.completions.create()`            |
+| **Chat templates**        | Built-in formatters: `llama3`, `mistral`, `chatml`, `alpaca`          |
+| **Cancellation**          | `AbortController` / `AbortSignal` — cancel mid-generation             |
+| **Typed errors**          | `ModelDownloadError`, `InferenceError`, `ConcurrencyLimitError`, etc. |
+| **TypeScript-first**      | Full type definitions + JSDoc on every public API                     |
+| **100 unit tests**        | All passing, with mock adapters for CI (no device needed)             |
+
 
 ---
 
 ## Requirements
 
 ### Common
-| Tool | Minimum Version |
-|---|---|
-| Node.js | 18 LTS |
-| React Native | 0.74+ |
-| TypeScript | 5.0+ |
+
+
+| Tool         | Minimum Version |
+| ------------ | --------------- |
+| Node.js      | 18 LTS          |
+| React Native | 0.74+           |
+| TypeScript   | 5.0+            |
+
 
 ### Android
-| Tool | Minimum Version | Install |
-|---|---|---|
-| Android Studio | Hedgehog (2023.1) | [Download](https://developer.android.com/studio) |
-| JDK | 17 | `brew install --cask zulu17` |
-| NDK | r26+ | Android Studio → SDK Manager → SDK Tools → NDK |
-| CMake | 3.22+ | Android Studio → SDK Manager → SDK Tools → CMake |
-| Min SDK | API 24 (Android 7) | — |
+
+
+| Tool           | Minimum Version    | Install                                          |
+| -------------- | ------------------ | ------------------------------------------------ |
+| Android Studio | Hedgehog (2023.1)  | [Download](https://developer.android.com/studio) |
+| JDK            | 17                 | `brew install --cask zulu17`                     |
+| NDK            | r26+               | Android Studio → SDK Manager → SDK Tools → NDK   |
+| CMake          | 3.22+              | Android Studio → SDK Manager → SDK Tools → CMake |
+| Min SDK        | API 24 (Android 7) | —                                                |
+
 
 ### iOS
-| Tool | Minimum Version |
-|---|---|
-| Xcode | 15+ |
-| CocoaPods | 1.13+ |
-| iOS Deployment Target | 13.4+ |
+
+
+| Tool                  | Minimum Version |
+| --------------------- | --------------- |
+| Xcode                 | 15+             |
+| CocoaPods             | 1.13+           |
+| iOS Deployment Target | 13.4+           |
+
 
 ---
 
@@ -266,13 +262,15 @@ const client = new BitNetClient({
 
 #### Constructor options — `BitNetConfig`
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `threads` | `number` | `4` | CPU threads for inference |
-| `contextSize` | `number` | `2048` | Context window in tokens |
-| `batchSize` | `number` | `512` | Prefill batch size |
-| `useGpu` | `boolean` | `false` | Enable GPU acceleration |
-| `maxConcurrency` | `number` | `1` | Max simultaneous requests |
+
+| Option           | Type      | Default | Description               |
+| ---------------- | --------- | ------- | ------------------------- |
+| `threads`        | `number`  | `4`     | CPU threads for inference |
+| `contextSize`    | `number`  | `2048`  | Context window in tokens  |
+| `batchSize`      | `number`  | `512`   | Prefill batch size        |
+| `useGpu`         | `boolean` | `false` | Enable GPU acceleration   |
+| `maxConcurrency` | `number`  | `1`     | Max simultaneous requests |
+
 
 ---
 
@@ -295,11 +293,13 @@ console.log(info.localPath); // /data/data/.../bitnet-models/model.gguf
 
 **Supported model ID formats:**
 
-| Format | Example |
-|---|---|
-| HuggingFace repo (auto-discover best `.gguf`) | `hf://microsoft/bitnet-b1.58-2B-4T-gguf` |
-| HuggingFace repo + specific file | `hf://microsoft/bitnet-b1.58-2B-4T-gguf/ggml-model-i2_s.gguf` |
-| Direct HTTPS URL | `https://example.com/model.gguf` |
+
+| Format                                        | Example                                                       |
+| --------------------------------------------- | ------------------------------------------------------------- |
+| HuggingFace repo (auto-discover best `.gguf`) | `hf://microsoft/bitnet-b1.58-2B-4T-gguf`                      |
+| HuggingFace repo + specific file              | `hf://microsoft/bitnet-b1.58-2B-4T-gguf/ggml-model-i2_s.gguf` |
+| Direct HTTPS URL                              | `https://example.com/model.gguf`                              |
+
 
 #### `loadModel(modelPathOrId)`
 
@@ -424,19 +424,21 @@ for await (const chunk of client.generateStream('The recipe for sourdough is:'))
 
 All `GenerationParams` fields plus:
 
-| Option | Type | Default | Description |
-|---|---|---|---|
-| `temperature` | `number` | `0.8` | Sampling temperature [0, 2] |
-| `topK` | `number` | `40` | Top-k sampling (0 = disabled) |
-| `topP` | `number` | `0.95` | Nucleus sampling [0, 1] |
-| `maxTokens` | `number` | `512` | Max tokens to generate |
-| `stopSequences` | `string[]` | `[]` | Stop on these strings |
-| `repetitionPenalty` | `number` | `1.1` | Repeat penalty [1, 2] |
-| `seed` | `number` | `-1` | RNG seed (-1 = random) |
-| `onToken` | `(token, count) => void` | — | Per-token callback |
-| `signal` | `AbortSignal` | — | Cancellation signal |
-| `chatTemplate` | `ChatTemplateId` | `'llama3'` | Message format |
-| `systemPrompt` | `string` | — | Injected system message |
+
+| Option              | Type                     | Default    | Description                   |
+| ------------------- | ------------------------ | ---------- | ----------------------------- |
+| `temperature`       | `number`                 | `0.8`      | Sampling temperature [0, 2]   |
+| `topK`              | `number`                 | `40`       | Top-k sampling (0 = disabled) |
+| `topP`              | `number`                 | `0.95`     | Nucleus sampling [0, 1]       |
+| `maxTokens`         | `number`                 | `512`      | Max tokens to generate        |
+| `stopSequences`     | `string[]`               | `[]`       | Stop on these strings         |
+| `repetitionPenalty` | `number`                 | `1.1`      | Repeat penalty [1, 2]         |
+| `seed`              | `number`                 | `-1`       | RNG seed (-1 = random)        |
+| `onToken`           | `(token, count) => void` | —          | Per-token callback            |
+| `signal`            | `AbortSignal`            | —          | Cancellation signal           |
+| `chatTemplate`      | `ChatTemplateId`         | `'llama3'` | Message format                |
+| `systemPrompt`      | `string`                 | —          | Injected system message       |
+
 
 #### `countTokens(text)`
 
@@ -462,13 +464,15 @@ const info = client.getDeviceInfo();
 
 The SDK automatically selects the correct template based on the loaded model ID. You can override it per-call.
 
-| Template ID | Models |
-|---|---|
-| `llama3` | Meta-Llama-3, BitNet b1.58 (default) |
-| `mistral` | Mistral, Mixtral |
-| `chatml` | Qwen, Yi, InternLM |
-| `alpaca` | Alpaca, WizardLM |
-| `none` | Raw prompt pass-through |
+
+| Template ID | Models                               |
+| ----------- | ------------------------------------ |
+| `llama3`    | Meta-Llama-3, BitNet b1.58 (default) |
+| `mistral`   | Mistral, Mixtral                     |
+| `chatml`    | Qwen, Yi, InternLM                   |
+| `alpaca`    | Alpaca, WizardLM                     |
+| `none`      | Raw prompt pass-through              |
+
 
 ```ts
 const result = await client.chat(messages, { chatTemplate: 'mistral' });
@@ -505,15 +509,17 @@ try {
 }
 ```
 
-| Error Class | Code | When thrown |
-|---|---|---|
-| `ModelDownloadError` | `MODEL_DOWNLOAD_FAILED` | Network error, bad URL, HTTP error |
-| `ModelNotFoundError` | `MODEL_NOT_FOUND` | `loadModel` called before `downloadModel` |
-| `ModelLoadError` | `MODEL_LOAD_FAILED` | Corrupt file, incompatible format |
-| `InsufficientStorageError` | `INSUFFICIENT_STORAGE` | Not enough disk space |
-| `InferenceError` | `INFERENCE_FAILED` | Native inference error |
-| `ConcurrencyLimitError` | `CONCURRENCY_LIMIT` | Too many simultaneous requests |
-| `EngineNotInitializedError` | `ENGINE_NOT_INITIALIZED` | `chat()` called before `loadModel()` |
+
+| Error Class                 | Code                     | When thrown                               |
+| --------------------------- | ------------------------ | ----------------------------------------- |
+| `ModelDownloadError`        | `MODEL_DOWNLOAD_FAILED`  | Network error, bad URL, HTTP error        |
+| `ModelNotFoundError`        | `MODEL_NOT_FOUND`        | `loadModel` called before `downloadModel` |
+| `ModelLoadError`            | `MODEL_LOAD_FAILED`      | Corrupt file, incompatible format         |
+| `InsufficientStorageError`  | `INSUFFICIENT_STORAGE`   | Not enough disk space                     |
+| `InferenceError`            | `INFERENCE_FAILED`       | Native inference error                    |
+| `ConcurrencyLimitError`     | `CONCURRENCY_LIMIT`      | Too many simultaneous requests            |
+| `EngineNotInitializedError` | `ENGINE_NOT_INITIALIZED` | `chat()` called before `loadModel()`      |
+
 
 ---
 
@@ -543,11 +549,13 @@ import type {
 
 A fully working example app is included at `example/`. It demonstrates all three core features:
 
-| Screen | Feature |
-|---|---|
-| **Home** | Download model with animated progress bar, auto-load into engine |
-| **Chat** | Multi-turn streaming chat UI, cancel mid-generation |
-| **Models** | List cached models, check disk usage, delete models |
+
+| Screen     | Feature                                                          |
+| ---------- | ---------------------------------------------------------------- |
+| **Home**   | Download model with animated progress bar, auto-load into engine |
+| **Chat**   | Multi-turn streaming chat UI, cancel mid-generation              |
+| **Models** | List cached models, check disk usage, delete models              |
+
 
 ### Run the example app
 
@@ -567,6 +575,7 @@ npm run ios
 ```
 
 > **First build only:** The React Native Gradle plugin must be pre-compiled once before building:
+>
 > ```bash
 > cd node_modules/@react-native/gradle-plugin
 > ./gradlew :react-native-gradle-plugin:jar --no-daemon
@@ -581,9 +590,9 @@ npm run ios
 
 1. Install **Android Studio Hedgehog** or later
 2. Open **SDK Manager** (Tools → SDK Manager) and install:
-   - Android SDK Platform **API 35**
-   - **NDK (Side by side)** — version `27.1.12297006`
-   - **CMake** — version `3.22.1`
+  - Android SDK Platform **API 35**
+  - **NDK (Side by side)** — version `27.1.12297006`
+  - **CMake** — version `3.22.1`
 3. Set environment variables (add to `~/.zshrc` or `~/.bashrc`):
 
 ```bash
@@ -598,11 +607,13 @@ The SDK's CMake build fetches `microsoft/BitNet` from GitHub and compiles `libre
 
 Supported ABIs:
 
-| ABI | CPU | SIMD |
-|---|---|---|
-| `arm64-v8a` | ARMv8 64-bit | NEON + dotprod |
-| `armeabi-v7a` | ARMv7 32-bit | NEON |
-| `x86_64` | Intel (emulator) | SSE4 |
+
+| ABI           | CPU              | SIMD           |
+| ------------- | ---------------- | -------------- |
+| `arm64-v8a`   | ARMv8 64-bit     | NEON + dotprod |
+| `armeabi-v7a` | ARMv7 32-bit     | NEON           |
+| `x86_64`      | Intel (emulator) | SSE4           |
+
 
 ### Registering the module in your app
 
@@ -670,14 +681,16 @@ npx tsc --noEmit
 
 ### Test coverage
 
-| Module | Tests |
-|---|---|
-| `BitNetClient` | Download, load, chat, stream, cancel, errors |
-| `InferenceEngine` | Token events, concurrency, AbortSignal |
-| `ModelManager` | Download deduplication, resume, delete |
-| `ModelCache` | Manifest persistence, corrupt recovery |
-| `HuggingFaceResolver` | URL parsing, GGUF auto-selection |
-| `ChatTemplate` | All 4 template formats |
+
+| Module                | Tests                                        |
+| --------------------- | -------------------------------------------- |
+| `BitNetClient`        | Download, load, chat, stream, cancel, errors |
+| `InferenceEngine`     | Token events, concurrency, AbortSignal       |
+| `ModelManager`        | Download deduplication, resume, delete       |
+| `ModelCache`          | Manifest persistence, corrupt recovery       |
+| `HuggingFaceResolver` | URL parsing, GGUF auto-selection             |
+| `ChatTemplate`        | All 4 template formats                       |
+
 
 ---
 
@@ -768,22 +781,22 @@ chore:    build process or auxiliary tool changes
 
 ### Pull Request checklist
 
-- [ ] `npm test` passes (100/100)
-- [ ] `npx tsc --noEmit` passes (zero errors)
-- [ ] New public APIs have JSDoc comments and TypeScript types
-- [ ] New error cases use a typed error class from `errors.ts`
-- [ ] `CHANGELOG.md` updated (for feature/fix PRs)
+- `npm test` passes (100/100)
+- `npx tsc --noEmit` passes (zero errors)
+- New public APIs have JSDoc comments and TypeScript types
+- New error cases use a typed error class from `errors.ts`
+- `CHANGELOG.md` updated (for feature/fix PRs)
 
 ---
 
 ## Roadmap
 
-- [ ] GPU inference via Android OpenCL / Metal on iOS
-- [ ] NPU support (Qualcomm Hexagon, Apple Neural Engine)
-- [ ] WebAssembly target for React Native Web
-- [ ] Quantization-aware fine-tuning export pipeline
-- [ ] Benchmark harness (tokens/sec, memory, battery drain)
-- [ ] Streaming to `ReadableStream` (Web Streams API)
+- GPU inference via Android OpenCL / Metal on iOS
+- NPU support (Qualcomm Hexagon, Apple Neural Engine)
+- WebAssembly target for React Native Web
+- Quantization-aware fine-tuning export pipeline
+- Benchmark harness (tokens/sec, memory, battery drain)
+- Streaming to `ReadableStream` (Web Streams API)
 
 ---
 
@@ -795,6 +808,4 @@ Built on top of [microsoft/BitNet](https://github.com/microsoft/BitNet) (MIT) an
 
 ---
 
-<p align="center">
-  Made with ❤️ for on-device AI
-</p>
+Made with ❤️ for on-device AI
