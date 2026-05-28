@@ -1,0 +1,88 @@
+buildscript {
+  repositories {
+    google()
+    mavenCentral()
+  }
+  dependencies {
+    classpath "com.android.tools.build:gradle:8.3.0"
+  }
+}
+
+def isNewArchitectureEnabled() {
+  return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
+}
+
+apply plugin: "com.android.library"
+apply plugin: "org.jetbrains.kotlin.android"
+
+if (isNewArchitectureEnabled()) {
+  apply plugin: "com.facebook.react"
+}
+
+android {
+  compileSdkVersion 34
+  namespace "com.bitnet"
+
+  defaultConfig {
+    minSdkVersion 24           // Android 7 — needed for some NDK features
+    targetSdkVersion 34
+    buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
+
+    externalNativeBuild {
+      cmake {
+        cppFlags "-std=c++17"
+        arguments "-DANDROID_STL=c++_shared",
+                  "-DREACT_NATIVE_DIR=${rootDir}/../node_modules/react-native",
+                  "-DRN_NEW_ARCH=${isNewArchitectureEnabled()}"
+        // Build both arm64-v8a and armeabi-v7a (minimum) + x86_64 for emulators
+        abiFilters "arm64-v8a", "armeabi-v7a", "x86_64"
+      }
+    }
+  }
+
+  externalNativeBuild {
+    cmake {
+      path "CMakeLists.txt"
+      version "3.22.1"
+    }
+  }
+
+  buildFeatures {
+    buildConfig true
+    prefab true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_17
+    targetCompatibility JavaVersion.VERSION_17
+  }
+
+  // kotlinOptions {} was removed in Kotlin Gradle Plugin 2.0+
+  // Use the kotlin {} block at project level instead (below the android {} block)
+
+  sourceSets {
+    main {
+      if (isNewArchitectureEnabled()) {
+        java.srcDirs += ["src/newarch/java"]
+      } else {
+        java.srcDirs += ["src/oldarch/java"]
+      }
+    }
+  }
+}
+
+// Set JVM target for all Kotlin compile tasks (works with KGP 1.x and 2.x)
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+  compilerOptions {
+    jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+  }
+}
+
+repositories {
+  mavenCentral()
+  google()
+}
+
+dependencies {
+  implementation "com.facebook.react:react-android"
+}

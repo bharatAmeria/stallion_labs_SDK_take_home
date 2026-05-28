@@ -1,0 +1,41 @@
+buildscript {
+    ext {
+        buildToolsVersion = "35.0.0"
+        minSdkVersion    = 24
+        compileSdkVersion = 35
+        targetSdkVersion = 35
+        ndkVersion       = "27.1.12297006"
+        kotlinVersion    = "2.0.21"
+    }
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.7.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion")
+
+        // React Native Gradle plugin — pre-built jars (bypass fragile includeBuild path)
+        def rnPluginDir = "$rootDir/../node_modules/@react-native/gradle-plugin"
+        classpath files(
+            "$rnPluginDir/react-native-gradle-plugin/build/libs/react-native-gradle-plugin.jar",
+            "$rnPluginDir/settings-plugin/build/libs/settings-plugin.jar",
+            "$rnPluginDir/shared/build/libs/shared.jar"
+        )
+        // Transitive runtime deps required by the RN plugin
+        classpath "com.google.code.gson:gson:2.8.9"
+        classpath "com.google.guava:guava:31.0.1-jre"
+        classpath "com.squareup:javapoet:1.13.0"
+    }
+}
+
+apply plugin: "com.facebook.react.rootproject"
+
+allprojects {
+    repositories {
+        maven { url("$rootDir/../node_modules/.m2") }
+        maven { url 'https://www.jitpack.io' }
+        google()
+        mavenCentral()
+    }
+}

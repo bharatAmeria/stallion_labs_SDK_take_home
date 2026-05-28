@@ -1,0 +1,63 @@
+# ── Node ──────────────────────────────────────────────────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── TypeScript build output ───────────────────────────────────────────────────
+lib/
+dist/
+
+# ── Android build artifacts ───────────────────────────────────────────────────
+android/build/
+android/.cxx/
+android/.gradle/
+android/app/build/
+example/android/build/
+example/android/app/build/
+example/android/.gradle/
+example/android/.cxx/
+*.apk
+*.aab
+
+# ── iOS build artifacts ───────────────────────────────────────────────────────
+ios/build/
+ios/Pods/
+ios/*.xcworkspace
+ios/DerivedData/
+example/ios/build/
+example/ios/Pods/
+example/ios/*.xcworkspace
+
+# ── Downloaded model files (can be GB in size) ───────────────────────────────
+downloaded-models/
+*.gguf
+*.gguf.partial
+
+# ── React Native / Metro ──────────────────────────────────────────────────────
+.metro-health-check*
+.bundle/
+.expo/
+
+# ── Gradle wrapper jar (binary — regenerate with: gradle wrapper) ─────────────
+# Uncomment the line below if you don't want to commit the wrapper jar.
+# example/android/gradle/wrapper/gradle-wrapper.jar
+
+# ── macOS ─────────────────────────────────────────────────────────────────────
+.DS_Store
+*.orig
+
+# ── Editor ────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ── Env / secrets ─────────────────────────────────────────────────────────────
+.env
+.env.local
+local.properties
+
+# ── Jest cache ────────────────────────────────────────────────────────────────
+.jest-cache/
+coverage/

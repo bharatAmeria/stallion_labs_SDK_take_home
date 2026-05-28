@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "commonjs",
+    "moduleResolution": "node10",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "strict": false,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "lib": ["ES2018"],
+    "types": ["node"]
+  },
+  "include": [
+    "src/HuggingFaceResolver.ts",
+    "src/DownloadAdapter.ts",
+    "src/ModelCache.ts",
+    "src/ModelManager.ts",
+    "src/errors.ts",
+    "src/types.ts"
+  ]
+}

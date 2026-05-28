@@ -1,0 +1,31 @@
+// Load the React Native settings plugin from the pre-built jar (avoids
+// the includeBuild/recompile path that fails on some machines).
+buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        def rnPluginDir = new File(rootDir, "../node_modules/@react-native/gradle-plugin")
+        classpath files(
+            new File(rnPluginDir, "settings-plugin/build/libs/settings-plugin.jar"),
+            new File(rnPluginDir, "shared/build/libs/shared.jar")
+        )
+        // Transitive runtime deps required by the RN settings-plugin
+        classpath "com.google.code.gson:gson:2.8.9"
+        classpath "com.google.guava:guava:31.0.1-jre"
+        classpath "com.squareup:javapoet:1.13.0"
+    }
+}
+apply plugin: "com.facebook.react.settings"
+
+extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
+    ex.autolinkLibrariesFromCommand()
+}
+
+rootProject.name = 'BitNetExample'
+include ':app'
+
+// Include the BitNet SDK — path from example/android/ → react-native-bitnet/android/
+include ':react-native-bitnet'
+project(':react-native-bitnet').projectDir = new File('../../android')
